@@ -1,3 +1,5 @@
+SET SERVEROUTPUT ON
+
 BEGIN
     dbms_output.put_line('Hello World!');
     dbms_output.put_line('Hello World!');
@@ -5,26 +7,26 @@ BEGIN
 END;
 /
 
---Usando variaveis de memÛria
+--Usando variaveis de mem√≥ria
 
 DECLARE
     v_nome VARCHAR(10) := 'Fiap';
     v_nota NUMBER(2) := 10;
 BEGIN
     dbms_output.put_line(v_nome);
-    --pipe pipe || Concactena a msg est·tica com vari·vel de memÛria
-    dbms_output.put_line('Mostrando conte˙do: ' || v_nome || 'Nota: ' || v_nota);
+    --pipe pipe || Concactena a msg est√°tica com vari√°vel de mem√≥ria
+    dbms_output.put_line('Mostrando conte√∫do: ' || v_nome || 'Nota: ' || v_nota);
 END;
 /
 
 DECLARE
-    --& abre uma caixa de msg para digitaÁ„o via teclado de dados
+    --& abre uma caixa de msg para digita√ß√£o via teclado de dados
     v_nome VARCHAR(10) := '&Nome';
     v_nota NUMBER(2) := &valor_nota;
 BEGIN
     dbms_output.put_line(v_nome);
-    --pipe pipe || Concactena a msg est·tica com vari·vel de memÛria
-    dbms_output.put_line('Mostrando conte˙do: ' || v_nome || 'Nota: ' || v_nota);
+    --pipe pipe || Concactena a msg est√°tica com vari√°vel de mem√≥ria
+    dbms_output.put_line('Mostrando conte√∫do: ' || v_nome || 'Nota: ' || v_nota);
 END;
 /
 
@@ -41,12 +43,12 @@ END;
 
 --Ex1
 /*
-EXERCICIO 01 ñ Criar um bloco PL-SQL para calcular o valor do novo 
-sal·rio mÌnimo que dever· ser de 25% em cima do atual, que È de R$
+EXERCICIO 01 ‚Äì Criar um bloco PL-SQL para calcular o valor do novo 
+sal√°rio m√≠nimo que dever√° ser de 25% em cima do atual, que √© de R$
 ???.
 */
 DECLARE
-    salario NUMBER(6,2) := &Salario;
+    salario NUMBER(10,2) := &Salario;
     salario_res salario%type;
 BEGIN
     salario_res := salario * 1.25;
@@ -56,9 +58,9 @@ END;
 
 --Ex2
 /*
-EXERCÕCIO 02 ñ Criar um bloco PL-SQL para calcular o valor em 
-REAIS de 45 dÛlares, sendo que o valor do c‚mbio a ser considerado 
-È de R$ ??? no qual estes valores dever„o ser constantes dentro do 
+EXERC√çCIO 02 ‚Äì Criar um bloco PL-SQL para calcular o valor em 
+REAIS de 45 d√≥lares, sendo que o valor do c√¢mbio a ser considerado 
+√© de R$ ??? no qual estes valores dever√£o ser constantes dentro do 
 bloco.
 */
 DECLARE
@@ -73,8 +75,8 @@ END;
 
 --Ex3
 /*
-EXERCÕCIO 03 ñ Criar um bloco PL-SQL para converter em REAIS os 
-dÛlares informados, sendo que o valor do C‚mbio a ser considerado È 
+EXERC√çCIO 03 ‚Äì Criar um bloco PL-SQL para converter em REAIS os 
+d√≥lares informados, sendo que o valor do C√¢mbio a ser considerado √© 
 de ????.
 */
 DECLARE
@@ -87,13 +89,13 @@ END;
 
 --Ex4
 /* 
-EXERCÕCIO 04 ñ Criar um bloco PL-SQL para calcular o valor das 
-parcelas de uma compra de um carro, nas seguintes condiÁıes: 
-OBSERVA«√O: 
- - Parcelas para aquisiÁ„o em 10 pagamentos. 
- - O valor total dos juros È de 3% e dever· ser aplicado sobre o 
+EXERC√çCIO 04 ‚Äì Criar um bloco PL-SQL para calcular o valor das 
+parcelas de uma compra de um carro, nas seguintes condi√ß√µes: 
+OBSERVA√á√ÉO: 
+ - Parcelas para aquisi√ß√£o em 10 pagamentos. 
+ - O valor total dos juros √© de 3% e dever√° ser aplicado sobre o 
 montante financiado 
- ñ No final informar o valor de cada parcela
+ ‚Äì No final informar o valor de cada parcela
 */
 DECLARE
     valor NUMBER(8,2) := &Valor;
@@ -108,20 +110,30 @@ END;
 
 --Ex5
 /*
-EXERCÕCIO 05 ñ Criar um bloco PL-SQL para calcular o valor de cada 
-parcela de uma compra de um carro, nas seguintes condiÁıes:
-- Parcelas para aquisiÁ„o em 6 pagamentos. 
-- Parcelas para aquisiÁ„o em 12 pagamentos. 
-- Parcelas para aquisiÁ„o em 8 pagamentos. 
-OBSERVA«√O: 
-1 ñ Dever· ser dada uma entrada de 20% do valor da compra. 
- ñ Dever· ser aplicada uma taxa juros, no saldo restante, nas 
-seguintes condiÁıes: 
- ñ No final informar o valor das parcelas para as 3 formas de 
-pagamento, com o Valor de aquisiÁ„o de 10.000.
-A ñ Pagamento em 6 parcelas: 10%. 
-B ñ Pagamento em 12 parcelas: 15%. 
-C ñ Pagamento em 18 parcelas: 20%. 
+EXERC√çCIO 05 ‚Äì Criar um bloco PL-SQL para calcular o valor de cada 
+parcela de uma compra de um carro, nas seguintes condi√ß√µes:
+- Parcelas para aquisi√ß√£o em 6 pagamentos. 
+- Parcelas para aquisi√ß√£o em 12 pagamentos. 
+- Parcelas para aquisi√ß√£o em 8 pagamentos. 
+OBSERVA√á√ÉO: 
+1 ‚Äì Dever√° ser dada uma entrada de 20% do valor da compra. 
+ ‚Äì Dever√° ser aplicada uma taxa juros, no saldo restante, nas 
+seguintes condi√ß√µes: 
+ ‚Äì No final informar o valor das parcelas para as 3 formas de 
+pagamento, com o Valor de aquisi√ß√£o de 10.000.
+A ‚Äì Pagamento em 6 parcelas: 10%. 
+B ‚Äì Pagamento em 12 parcelas: 15%. 
+C ‚Äì Pagamento em 18 parcelas: 20%. 
 */
 DECLARE
-    
+    v_carro number(10,2) := 10000 * 0.8;
+    v_presta v_carro%type;
+BEGIN
+    v_presta := (v_carro * 1.1)/6;
+    dbms_output.put_line('Valor da presta√ß√£o em 6x: ' || v_presta);
+    v_presta := (v_carro * 1.15)/6;
+    dbms_output.put_line('Valor da presta√ß√£o em 12x: ' || v_presta);
+    v_presta := (v_carro * 1.2)/6;
+    dbms_output.put_line('Valor da presta√ß√£o em 18x: ' || v_presta);
+END;
+/
