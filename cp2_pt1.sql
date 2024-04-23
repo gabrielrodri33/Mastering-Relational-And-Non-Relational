@@ -31,9 +31,9 @@ SELECT * FROM tbl_produto2_rm98626;
 
 --INSERT tabela produto
 BEGIN
-    INSERT INTO tbl_produto_rm98626(nm_produto, preco) VALUES('Água', 1.75);
+    INSERT INTO tbl_produto_rm98626(nm_produto, preco) VALUES('Ãgua', 1.75);
     INSERT INTO tbl_produto_rm98626(nm_produto, preco) VALUES('Peixe', 75);
-    INSERT INTO tbl_produto_rm98626(nm_produto, preco) VALUES('Feijão', 30);
+    INSERT INTO tbl_produto_rm98626(nm_produto, preco) VALUES('FeijÃ£o', 30);
     INSERT INTO tbl_produto_rm98626(nm_produto, preco) VALUES('Vinho', 79.5);
 COMMIT;
 END;
@@ -55,58 +55,50 @@ END;
 2- Inserir os dados
 
 Tabela: Produto
-            5 - Macarrão  18.80
-            6 - Óleo      14.60
+            5 - MacarrÃ£o  18.80
+            6 - Ã“leo      14.60
            
 Tabela: Produto1
             5 - Azeite  35.80
-            6 - Carvão  40.60
+            6 - CarvÃ£o  40.60
 */
 
 BEGIN
-    INSERT INTO tbl_produto_rm98626(nm_produto, preco) VALUES ('Macarrão', 18.8);
-    INSERT INTO tbl_produto_rm98626(nm_produto, preco) VALUES ('Óleo', 14.6);
+    INSERT INTO tbl_produto_rm98626(nm_produto, preco) VALUES ('MacarrÃ£o', 18.8);
+    INSERT INTO tbl_produto_rm98626(nm_produto, preco) VALUES ('Ã“leo', 14.6);
     
     INSERT INTO tbl_produto1_rm98626(nm_produto, preco) VALUES ('Azeite', 35.8);
-    INSERT INTO tbl_produto1_rm98626(nm_produto, preco) VALUES ('Carvão', 40.6);
+    INSERT INTO tbl_produto1_rm98626(nm_produto, preco) VALUES ('CarvÃ£o', 40.6);
 COMMIT;
 END;
 /
 
---Migrar os dados de produto e produto1 para produto2 sem repeição
+--Migrar os dados de produto e produto1 para produto2 sem repeiÃ§Ã£o
 DECLARE
-    CURSOR my_cursor_p IS SELECT nm_produto, preco FROM tbl_produto_rm98626;
+    CURSOR my_cursor_p IS
+        SELECT nm_produto, preco FROM tbl_produto_rm98626
+        UNION
+        SELECT nm_produto, preco FROM tbl_produto1_rm98626;
     cs_produto my_cursor_p%ROWTYPE;
-    
-    CURSOR my_cursor_p1 IS SELECT nm_produto, preco FROM tbl_produto_rm98626;
-    cs_produto1 my_cursor_p1%ROWTYPE;
-    
-    CURSOR my_cursor_p2 IS SELECT nm_produto, preco FROM tbl_produto2_rm98626;
-    cs_produto2 my_cursor_p2%ROWTYPE;
     
     v_status_nm NUMBER(1);
     v_status_preco v_status_nm%type;
-    
 BEGIN
     FOR cs_produto IN my_cursor_p LOOP
-        INSERT INTO tbl_produto2_rm98626(nm_produto, preco) VALUES (cs_produto.nm_produto, cs_produto.preco);
-    END LOOP;
-    
-    FOR cs_produto1 IN my_cursor_p1 LOOP
         v_status_nm := 0;
         v_status_preco := 0;
         
-        FOR cs_produto2 IN my_cursor_p2 LOOP
-            IF cs_produto2.nm_produto = cs_produto1.nm_produto AND cs_produto2.preco = cs_produto1.preco THEN
-                v_status_nm := 1;
-                v_status_preco := 1;
-                EXIT;
-            END IF;
+        SELECT COUNT(*) INTO v_status_nm FROM tbl_produto2_rm98626 WHERE nm_produto = cs_produto.nm_produto;
+        
+        IF v_status_nm > 0 THEN
+            SELECT COUNT(*) INTO v_status_preco FROM tbl_produto2_rm98626 WHERE nm_produto = cs_produto.nm_produto AND preco = cs_produto.preco;
             
-            IF v_status_nm = 0 AND v_status_preco = 0 THEN
-                INSERT INTO tbl_produto2_rm98626 (nm_produto, preco) FROM (cs_produto1.nm_produto, cs_produto.preco)
+            IF v_status_preco = 0 THEN
+                INSERT INTO tbl_produto2_rm98626(nm_produto, preco) VALUES (cs_produto.nm_produto, cs_produto.preco);
             END IF;
-        END LOOP;
+        ELSE
+            INSERT INTO tbl_produto2_rm98626(nm_produto, preco) VALUES (cs_produto.nm_produto, cs_produto.preco);
+        END IF;
     END LOOP;
 END;
 /
